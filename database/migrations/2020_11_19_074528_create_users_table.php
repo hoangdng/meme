@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('username');
             $table->foreign('username')->references('username')->on('accounts');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->string('status');
             $table->string('role');
             $table->timestamps();
