@@ -18,7 +18,7 @@ Route::post('accounts/post', 'AccountController@store');
 
 Route::post('login', 'AuthController@authenticate');
 
-
 Route::get('users', 'UserController@index');
+Route::get('users/{id}', 'UserController@show');
 Route::patch('users/{id}', 'UserController@update');
 Route::delete('users/{id}', 'UserController@delete');
