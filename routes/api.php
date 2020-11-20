@@ -15,9 +15,11 @@ Route::post('accounts/post', 'AccountController@store');
 
 Route::post('login', 'AuthController@authenticate');
 
-//Routes for admin
+//Routes for logged in users
 Route::group(['middleware' => ['api', 'jwt.verify']], function () {
     Route::get('users/{id}', 'UserController@show');
+
+    //Routes for admin
     Route::group(['middleware' => ['admin']], function () {
         Route::get('users', 'UserController@index');
         Route::patch('users/{id}', 'UserController@update');

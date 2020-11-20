@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -40,8 +36,7 @@ class UserController extends Controller
     {
         $theUser = User::find($id);
 
-        if ($theUser != null)
-        {
+        if ($theUser != null) {
             $theUser->update($request->except(['username']));
             return response()->json(['data' => $theUser, 'message' => "Update successfully"], 200);
         }
@@ -53,10 +48,10 @@ class UserController extends Controller
     public function delete($id)
     {
         $username = User::find($id)->username;
-        
+
         Account::where('username', $username)->delete();
         User::where('username', $username)->delete();
 
-        return response()->json(['data' => User::all()], 200);
+        return response()->json(['message' => "User {$username} deleted"], 200);
     }
 }
