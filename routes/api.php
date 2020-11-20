@@ -26,3 +26,8 @@ Route::group(['middleware' => ['api', 'jwt.verify']], function () {
         Route::delete('users/{id}', 'UserController@delete');
     });
 });
+
+Route::get('posts', 'PostController@index');
+Route::post('posts', 'PostController@store');
+Route::patch('posts/{id}', 'PostController@update');
+Route::delete('posts/{id}', 'PostController@delete');
