@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +23,21 @@ class Account extends Authenticatable implements JWTSubject
     public function user()
     {
         return $this->hasOne('App\Models\User', 'username', 'username');
+    }
+
+    //check if this account is belong to an admin or not
+    public function isAdmin()
+    {
+        $role = User::where('username', $this->username)->first()->role;
+        
+        if ($role == "ROLE_ADMIN")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
      /**
