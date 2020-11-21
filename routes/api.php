@@ -37,3 +37,8 @@ Route::get('categories', 'CategoryController@index');
 
 Route::get('posts/{id}/categories', 'PostCategoryController@showCategories');
 Route::get('categories/{id}/posts', 'PostCategoryController@showPosts');
+
+Route::get('comments/{id}', 'CommentController@show');
+Route::post('comments', 'CommentController@store');
+Route::patch('comments/{id}', 'CommentController@update');
+Route::delete('comments/{id}', 'CommentController@delete');
