@@ -12,7 +12,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id', 'asc')->get();
-        return response()->json(["data" => $posts]);
+        return response()->json(["data" => $posts], 200);
     }
 
     public function store(Request $request)
@@ -43,8 +43,6 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $thePost = Post::find($id);
-
-        $today = date("Y-m-d");
 
         if ($thePost != null) {
             $thePost->update($request->except(['username']));
