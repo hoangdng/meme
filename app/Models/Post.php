@@ -18,4 +18,9 @@ class Post extends Model
         'vote_up',
         'vote_down',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category', 'post_category', 'post_id', 'category_id');
+    }
 }
