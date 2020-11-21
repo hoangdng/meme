@@ -17,4 +17,9 @@ class User extends Model
     {
         return $this->belongsTo('App\Models\Account', 'username', 'username');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment', 'username', 'username');
+    }
 }
