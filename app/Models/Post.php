@@ -33,4 +33,9 @@ class Post extends Model
     {
         return $this->hasMany('App\Models\Report', 'post_id', 'id');
     }
+
+    public function votes()
+    {
+        return $this->hasMany('App\Models\Vote', 'post_id', 'id');
+    }
 }
