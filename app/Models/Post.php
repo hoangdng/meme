@@ -28,4 +28,9 @@ class Post extends Model
     {
         return $this->hasMany('App\Models\Comment', 'post_id', 'id');
     }
+
+    public function reports()
+    {
+        return $this->hasMany('App\Models\Report', 'post_id', 'id');
+    }
 }

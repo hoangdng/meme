@@ -42,3 +42,9 @@ Route::get('comments/{id}', 'CommentController@show');
 Route::post('comments', 'CommentController@store');
 Route::patch('comments/{id}', 'CommentController@update');
 Route::delete('comments/{id}', 'CommentController@delete');
+
+Route::get('reports', 'ReportController@index');
+Route::get('reports/{id}', 'ReportController@show');
+Route::post('reports', 'ReportController@store');
+Route::patch('reports/{id}', 'ReportController@update');
+Route::delete('reports/{id}', 'ReportController@delete');
