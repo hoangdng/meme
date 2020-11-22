@@ -48,3 +48,8 @@ Route::get('reports/{id}', 'ReportController@show');
 Route::post('reports', 'ReportController@store');
 Route::patch('reports/{id}', 'ReportController@update');
 Route::delete('reports/{id}', 'ReportController@delete');
+
+Route::get('votes/{id}', 'VoteController@show');
+Route::post('votes', 'VoteController@store');
+Route::patch('votes/{id}', 'VoteController@update');
+Route::delete('votes/{id}', 'VoteController@delete');

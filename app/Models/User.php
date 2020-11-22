@@ -22,4 +22,14 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Comment', 'username', 'username');
     }
+
+    public function reports()
+    {
+        return $this->hasMany('App\Models\Report', 'username', 'username');
+    }
+
+    public function votes()
+    {
+        return $this->hasMany('App\Models\Vote', 'username', 'username');
+    }
 }
