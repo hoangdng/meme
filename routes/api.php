@@ -11,46 +11,46 @@
 |
  */
 
+//Test routes
 Route::post('accounts/post', 'AccountController@store');
 
+//Public routes
 Route::post('login', 'AuthController@authenticate');
-
-//Routes for logged in users
-Route::group(['middleware' => ['api', 'jwt.verify']], function () {
-    Route::get('users/{id}', 'UserController@show');
-    Route::post('users/avatar', 'UserController@uploadAvatar');
-
-    //Routes for admin
-    Route::group(['middleware' => ['admin']], function () {
-        Route::get('users', 'UserController@index');
-        Route::patch('users/{id}', 'UserController@update');
-        Route::delete('users/{id}', 'UserController@delete');
-    });
-});
 
 Route::get('posts', 'PostController@index');
 Route::get('posts/{id}', 'PostController@show');
-Route::post('posts', 'PostController@store');
-Route::patch('posts/{id}', 'PostController@update');
-Route::delete('posts/{id}', 'PostController@delete');
 
 Route::get('categories', 'CategoryController@index');
+Route::get('categories/{id}', 'CategoryController@show');
 
-Route::get('posts/{id}/categories', 'PostCategoryController@showCategories');
-Route::get('categories/{id}/posts', 'PostCategoryController@showPosts');
+//Routes for logged in users
+Route::group(['middleware' => ['api', 'jwt.verify']], function () {
+    Route::get('users', 'UserController@index');
+    Route::get('users/{id}', 'UserController@show');
+    Route::post('users/avatar', 'UserController@uploadAvatar');
 
-Route::get('comments/{id}', 'CommentController@show');
-Route::post('comments', 'CommentController@store');
-Route::patch('comments/{id}', 'CommentController@update');
-Route::delete('comments/{id}', 'CommentController@delete');
+    Route::post('comments', 'CommentController@store');
+    Route::patch('comments/{id}', 'CommentController@update');
+    Route::delete('comments/{id}', 'CommentController@delete');
 
-Route::get('reports', 'ReportController@index');
-Route::get('reports/{id}', 'ReportController@show');
-Route::post('reports', 'ReportController@store');
-Route::patch('reports/{id}', 'ReportController@update');
-Route::delete('reports/{id}', 'ReportController@delete');
+    Route::post('posts', 'PostController@store');
+    Route::patch('posts/{id}', 'PostController@update');
+    Route::delete('posts/{id}', 'PostController@delete');
 
-Route::get('votes/{id}', 'VoteController@show');
-Route::post('votes', 'VoteController@store');
-Route::patch('votes/{id}', 'VoteController@update');
-Route::delete('votes/{id}', 'VoteController@delete');
+    Route::post('reports', 'ReportController@store');
+
+    Route::post('votes', 'VoteController@store');
+    Route::patch('votes/{id}', 'VoteController@update');
+    Route::delete('votes/{id}', 'VoteController@delete');
+    
+    //Routes for admin
+    Route::group(['middleware' => ['admin']], function () {
+        Route::patch('users/{id}', 'UserController@update');
+        Route::delete('users/{id}', 'UserController@delete');
+
+        Route::get('reports', 'ReportController@index');
+        Route::get('reports/{id}', 'ReportController@show');
+        Route::patch('reports/{id}', 'ReportController@update');
+        Route::delete('reports/{id}', 'ReportController@delete');
+    });
+});
