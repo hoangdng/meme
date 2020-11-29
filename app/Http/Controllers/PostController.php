@@ -14,6 +14,16 @@ class PostController extends Controller
         return response()->json(["data" => $posts], 200);
     }
 
+    public function show($id)
+    {
+        $thePost = Post::find($id);
+        if ($thePost != null) {
+            return response()->json(["data" => $thePost], 200);
+        }
+
+        return response()->json(['error' => 'Post not found'], 404);
+    }
+
     public function store(Request $request)
     {
         $title = $request->input('title');
@@ -54,8 +64,10 @@ class PostController extends Controller
     public function delete($id)
     {
         $thePost = Post::find($id);
-  
+
         if ($thePost != null) {
+            $thePost->votes()->delete();
+            $thePost->comments()->delete();
             $thePost->delete();
             return response()->json(['message' => 'Delete successfully'], 200);
         }

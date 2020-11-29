@@ -28,12 +28,12 @@ Route::group(['middleware' => ['api', 'jwt.verify']], function () {
 });
 
 Route::get('posts', 'PostController@index');
+Route::get('posts/{id}', 'PostController@show');
 Route::post('posts', 'PostController@store');
 Route::patch('posts/{id}', 'PostController@update');
 Route::delete('posts/{id}', 'PostController@delete');
 
 Route::get('categories', 'CategoryController@index');
-
 
 Route::get('posts/{id}/categories', 'PostCategoryController@showCategories');
 Route::get('categories/{id}/posts', 'PostCategoryController@showPosts');
