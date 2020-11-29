@@ -38,7 +38,7 @@ class UserController extends Controller
         $theUser = User::find($id);
 
         if ($theUser != null) {
-            $theUser->update($request->except(['username']));
+            $theUser->update($request->except(['username', 'avatar']));
             return response()->json(['data' => $theUser, 'message' => "Update successfully"], 200);
         }
 
