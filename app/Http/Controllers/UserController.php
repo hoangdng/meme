@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -37,7 +38,7 @@ class UserController extends Controller
         $theUser = User::find($id);
 
         if ($theUser != null) {
-            $theUser->update($request->except(['username']));
+            $theUser->update($request->except(['username', 'avatar']));
             return response()->json(['data' => $theUser, 'message' => "Update successfully"], 200);
         }
 
@@ -53,5 +54,23 @@ class UserController extends Controller
         User::where('username', $username)->delete();
 
         return response()->json(['message' => "User {$username} deleted"], 200);
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+        if ($request->hasfile('avatar')) {
+            $file = $request->file('avatar');
+            $fileExtension = $file->getClientOriginalExtension();
+            $fileName = 'avatar_' . Auth::user()->username . '.' . $fileExtension;
+            $file->move('upload/avatars/', $fileName);
+
+            $user = User::find(Auth::user()->id);
+            $user->avatar = $fileName;
+            $user->save();
+
+            return response()->json(['message' => "Avatar uploaded"], 200);
+        } else {
+            return response()->json(['error' => 'Upload file not found'], 404);
+        }
     }
 }

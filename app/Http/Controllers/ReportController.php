@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Report;
 use Illuminate\Http\Request;
 
@@ -14,16 +13,14 @@ class ReportController extends Controller
         return response()->json(["data" => $reports], 200);
     }
 
-    public function show($postId)
+    public function show($id)
     {
-        $thePost = Post::find($postId);
+        $theReport = Report::with('post')->find($id);
 
-        if ($thePost == null) {
-            return response()->json(['error' => 'Post not found'], 404);
+        if ($theReport != null) {
+            return response()->json(["data" => $theReport], 200);
         }
-
-        $reports = $thePost->reports()->get();
-        return response()->json(["data" => $reports], 200);
+        return response()->json(['error' => 'Post not found'], 404);
     }
 
     public function store(Request $request)

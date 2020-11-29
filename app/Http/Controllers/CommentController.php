@@ -8,18 +8,6 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function show($postId)
-    {
-        $thePost = Post::find($postId);
-
-        if ($thePost == null) {
-            return response()->json(['error' => 'Post not found'], 404);
-        }
-
-        $comments = $thePost->comments()->get();
-        return response()->json(["data" => $comments], 200);
-    }
-
     public function store(Request $request)
     {
         $postId = $request->input('post_id');
