@@ -8,20 +8,6 @@ use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
-    public function show($postId)
-    {
-        $thePost = Post::find($postId);
-
-        if ($thePost == null) {
-            return response()->json(['error' => 'Post not found'], 404);
-        }
-
-        $upVotes = $thePost->votes()->get()->where('type', 'UP')->count();
-        $downVotes = $thePost->votes()->get()->where('type', 'DOWN')->count();
-
-        return response()->json(["up_vote" => $upVotes, "down_vote" => $downVotes, "diff_vote" => $upVotes - $downVotes], 200);
-    }
-
     public function store(Request $request)
     {
         $postId = $request->input('post_id');
