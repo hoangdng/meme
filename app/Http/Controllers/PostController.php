@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\Post;
+use App\Http\Requests\StorePost;
+use Carbon\Carbon;
+
 
 class PostController extends Controller
 {
@@ -25,7 +28,7 @@ class PostController extends Controller
         return response()->json(['error' => 'Post not found'], 404);
     }
 
-    public function store(Request $request)
+    public function store(StorePost $request)
     {
         $title = $request->input('title');
         $postedDate = Carbon::now();
