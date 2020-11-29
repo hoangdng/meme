@@ -16,6 +16,7 @@ Route::post('accounts/post', 'AccountController@store');
 
 //Public routes
 Route::post('login', 'AuthController@authenticate');
+Route::post('logout', 'AuthController@logout');
 
 Route::get('posts', 'PostController@index');
 Route::get('posts/{id}', 'PostController@show');
