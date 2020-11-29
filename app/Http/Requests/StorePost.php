@@ -27,7 +27,7 @@ class StorePost extends FormRequest
     {
         return [
             'title' => 'required|max:100',
-            'image' => 'required',
+            'image' => 'required|mimes:jpeg,jpg,png',
         ];
     }
 
@@ -42,6 +42,7 @@ class StorePost extends FormRequest
             'title.required' => 'A title is required',
             'title.max' => 'Title is too long',
             'image.required' => 'An image is required',
+            'image.mime' => 'File is not supported'
         ];
     }
 
