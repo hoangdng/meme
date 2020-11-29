@@ -18,6 +18,7 @@ Route::post('login', 'AuthController@authenticate');
 //Routes for logged in users
 Route::group(['middleware' => ['api', 'jwt.verify']], function () {
     Route::get('users/{id}', 'UserController@show');
+    Route::post('users/avatar', 'UserController@uploadAvatar');
 
     //Routes for admin
     Route::group(['middleware' => ['admin']], function () {
