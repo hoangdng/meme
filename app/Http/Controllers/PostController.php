@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
-use App\Http\Requests\StorePost;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -28,61 +25,51 @@ class PostController extends Controller
         return response()->json(['error' => 'Post not found'], 404);
     }
 
-    public function store(StorePost $request)
+    public function store(PostRequest $request)
     {
-        $title = $request->input('title');
-        $postedDate = Carbon::now();
-        $username = Auth::user()->username;
-        $status = "PENDING";
-        $voteUp = 0;
-        $voteDown = 0;
+        $file = $request->file('image');
+        $fileExtension = $file->getClientOriginalExtension();
+        $fileName = 'image_' . Auth::user()->username . '_' . time() . '.' . $fileExtension;
+        $file->move('upload/images/', $fileName);
 
-        if ($request->hasfile('image')) {
-            $file = $request->file('image');
-            $fileExtension = $file->getClientOriginalExtension();
-            $fileName = 'image_' . Auth::user()->username . '_' . time() . '.' . $fileExtension;
-            $file->move('upload/images/', $fileName);
+        Post::create([
+            'title' => $request->input('title'),
+            'image' => $fileName,
+            'posted_date' => Carbon::now(),
+            'username' => Auth::user()->username,
+            'status' => 'PENDING',
+            'vote_up' => 0,
+            'vote_down' => 0,
+        ]);
 
-            Post::create([
-                'title' => $title,
-                'image' => $fileName,
-                'posted_date' => $postedDate,
-                'username' => $username,
-                'status' => $status,
-                'vote_up' => $voteUp,
-                'vote_down' => $voteDown,
-            ]);
-
-            $newPost = Post::get()->sortBy('id')->last();
-            return response()->json(['data' => $newPost], 201);
-        } else {
-            return response()->json(['error' => 'Upload image not found'], 404);
-        }
+        $newPost = Post::get()->sortBy('id')->last();
+        return response()->json(['data' => $newPost], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
         $thePost = Post::find($id);
 
-        if ($thePost != null) {
-            $thePost->update($request->except(['username']));
-            return response()->json(['data' => $thePost, 'message' => "Update successfully"], 200);
+        if ($thePost == null) {
+            return response()->json(['error' => 'Post not found'], 404);
         }
 
-        return response()->json(['error' => 'Post not found'], 404);
+        $thePost->update($request->except(['username', 'image']));
+        return response()->json(['data' => $thePost, 'message' => "Post updated"], 200);
     }
 
-    public function delete($id)
+    public function delete(PostRequest $request, $id)
     {
+
         $thePost = Post::find($id);
 
-        if ($thePost != null) {
-            $thePost->votes()->delete();
-            $thePost->comments()->delete();
-            $thePost->delete();
-            return response()->json(['message' => 'Delete successfully'], 200);
+        if ($thePost == null) {
+            return response()->json(['error' => 'Post not found'], 404);
         }
 
-        return response()->json(['error' => 'Post not found'], 404);
+        $thePost->votes()->delete();
+        $thePost->comments()->delete();
+        $thePost->delete();
+        return response()->json(['message' => 'Delete successfully'], 200);
     }
 }

@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CommentController extends Controller
 {
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        $postId = $request->input('post_id');
-        $username = $request->input('username');
-        $content = $request->input('content');
-
         Comment::create([
-            'post_id' => $postId,
-            'username' => $username,
-            'content' => $content,
+            'post_id' => $request->input('post_id'),
+            'username' => Auth::user()->username,
+            'content' => $request->input('content'),
         ]);
 
         $newComment = Comment::get()->sortBy('id')->last();
@@ -25,7 +22,7 @@ class CommentController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(CommentRequest $request, $id)
     {
         $theComment = Comment::find($id);
 
@@ -37,7 +34,7 @@ class CommentController extends Controller
         return response()->json(['data' => $theComment, 'message' => "Update successfully"], 200);
     }
 
-    public function delete($id)
+    public function delete(CommentRequest $request, $id)
     {
         $theComment = Comment::find($id);
 
