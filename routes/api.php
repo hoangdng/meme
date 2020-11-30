@@ -12,7 +12,7 @@
  */
 
 //Test routes
-Route::post('accounts/post', 'AccountController@store');
+Route::post('accounts', 'AccountController@store');
 
 //Public routes
 Route::post('login', 'AuthController@authenticate');
